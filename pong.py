@@ -38,6 +38,23 @@ class Paddle:
             if self.y + self.height < HEIGHT: #this limit stops the paddle from moving out of the window
                 self.y += self.VEL
 
+    def move_left_left_paddle(self):
+        if self.x - self.VEL >= 0:  # Check if the paddle is within the distance limit on the left
+            self.x -= self.VEL
+
+    def move_right_left_paddle(self):
+        if self.x + self.width + self.VEL <= WIDTH // 2:  # Check if the paddle is within the distance limit on the right
+            self.x += self.VEL
+
+    def move_left_right_paddle(self):
+        if self.x - self.VEL >= WIDTH // 2 + 1:  # Check if the paddle is within the distance limit on the left
+            self.x -= self.VEL
+
+    def move_right_right_paddle(self):
+        if self.x + self.width + self.VEL <= WIDTH:  # Check if the paddle is within the distance limit on the right
+            self.x += self.VEL
+
+
     def reset(self):
         self.x = self.original_x
         self.y = self.original_y
@@ -123,13 +140,22 @@ def handle_collision(ball, left_paddle, right_paddle):
 def handle_paddle_movement(keys, left_paddle, right_paddle):
     if keys[pygame.K_w]:
         left_paddle.move(up=True)
-    if keys[pygame.K_s]:
+    elif keys[pygame.K_s]:
         left_paddle.move(up=False)
+    elif keys[pygame.K_a]:  # Move the left paddle to the left
+        left_paddle.move_left_left_paddle()
+    elif keys[pygame.K_d]:  # Move the left paddle to the right
+        left_paddle.move_right_left_paddle()
 
     if keys[pygame.K_UP]:
         right_paddle.move(up=True)
-    if keys[pygame.K_DOWN]:
+    elif keys[pygame.K_DOWN]:
         right_paddle.move(up=False)
+    elif keys[pygame.K_LEFT]:  # Move the right paddle to the left
+        right_paddle.move_left_right_paddle()
+    elif keys[pygame.K_RIGHT]:  # Move the right paddle to the right
+        right_paddle.move_right_right_paddle()
+        
 
 def main():
     run = True
